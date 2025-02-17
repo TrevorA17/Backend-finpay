@@ -1,20 +1,25 @@
 const express = require("express");
 const {
   addUserAccount,
+  updateUserDetails,
   updateUserAccount,
-  getAllUsers,
   getUserAccounts,
+  getUserDetails,
 } = require("../controllers/userController");
+const authenticateToken = require("../middlewares/authenticateToken");
 const router = express.Router();
 
-// Route to add a new user account
-router.post("/user/accounts/:userId", addUserAccount);
+//Route to update an existing user details
+router.put("/:userId", authenticateToken, updateUserDetails);
+
+// Apply the authenticateToken middleware to the GET request
+router.get("/", authenticateToken, getUserDetails);
 
 // Route to update an existing user account
 router.put("/user/accounts/:userId/:accountId", updateUserAccount);
 
-//get all users
-router.get("/all", getAllUsers);
+// Route to add a new user account
+router.post("/user/accounts/:userId", addUserAccount);
 
 //get user accounts
 router.get("/user/accounts/:userId", getUserAccounts);
